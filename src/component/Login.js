@@ -4,6 +4,37 @@ import axios from 'axios'
 import "./../CSS/user.css"
 
 class Login extends React.Component {
+    state = {    
+        credentials: {
+          username: '',
+          password: ''
+        }    
+      };
+      
+      handleChange = e => {
+        this.setState({
+          credentials: {
+            ...this.state.credentials,
+            [e.target.name]: e.target.value
+          }
+        });
+      };
+    
+      login = e => {
+        e.preventDefault();
+        
+        axios.post('http://localhost:9000/api/login', this.state.credentials)
+          .then(resp=> {  
+            console.log('resp: ', resp);      
+            localStorage.setItem('token', resp.data.token);
+            // localStorage.setItem('role', resp.data.role);
+            // localStorage.setItem('username', resp.data.username);               
+            this.props.history.push('/friends');        
+          })
+          .catch(err=> {           
+            console.log(err);
+          })     
+      };
     
       render() {
         
